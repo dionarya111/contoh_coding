@@ -1,0 +1,154 @@
+<?php
+
+class C_agency extends CI_Controller
+{
+	public $tabel_1 		= "setting";
+	public $key 			= "idx";
+	public $tabel_2 		= "agency";
+	public $link_kembali	= "agency";
+
+	function __construct()
+	{
+		parent::__construct();
+	}
+
+	function index()
+	{
+		$data['username'] = $this->session->userdata("username");
+		$data['agency']	  = ambil_data($this->tabel_2)->result();
+
+		$this->load->view("atas",$data);
+		$this->load->view("menu_atas");
+		$this->load->view("menu_samping");
+		$this->load->view("agency/tampil");
+		$this->load->view("bawah");
+	}
+
+	function form_tambah()
+	{
+		$data['username'] = $this->session->userdata("username");
+
+		$this->load->view("atas",$data);
+		$this->load->view("menu_atas");
+		$this->load->view("menu_samping");
+		$this->load->view("agency/tambah");
+		$this->load->view("bawah");
+	}
+
+	function proses_tambah()
+	{
+		$data['nama_agency'] 	= $this->input->post("nama_agency",TRUE);
+		$data['no_terdaftar'] 	= $this->input->post("no_terdaftar",TRUE);
+		$data['alamat'] 		= $this->input->post("alamat",TRUE);
+		$data['no_telp'] 		= $this->input->post("no_telp",TRUE);
+		$data['no_hp'] 			= $this->input->post("no_hp",TRUE);
+		$data['no_wa'] 			= $this->input->post("no_wa",TRUE);
+		$data['akun_ig'] 		= $this->input->post("akun_ig",TRUE);
+		$data['akun_fb'] 		= $this->input->post("akun_fb",TRUE);
+		$data['akun_twitter'] 	= $this->input->post("akun_twitter",TRUE);
+
+		$simpan = tambah_data($this->tabel_2,$data);
+
+		if($simpan==TRUE)
+		{
+			$pesan = "Data $this->tabel_2 telah berhasil disimpan.";
+			?>
+			<script type="text/javascript">
+				alert("<?php echo $pesan?>");
+				window.location.href="<?php echo site_url($this->link_kembali)?>";
+			</script>
+			<?php
+		}
+
+		else
+		{
+			$pesan = "Data $this->tabel_2 gagal disimpan.";
+			?>
+			<script type="text/javascript">
+				alert("<?php echo $pesan?>");
+				window.history.back();
+			</script>
+			<?php
+		}
+	}
+
+	function form_ubah($id)
+	{
+		$data['agency'] 	= ambil_satu_data($this->tabel_2,$this->key,$id)->row();
+		
+		$data['username'] 	= $this->session->userdata("username");
+
+		$this->load->view("atas",$data);
+		$this->load->view("menu_atas");
+		$this->load->view("menu_samping");
+		$this->load->view("agency/ubah");
+		$this->load->view("bawah");
+
+	}
+
+	function proses_ubah($id)
+	{
+		$data['nama_agency'] 	= $this->input->post("nama_agency",TRUE);
+		$data['no_terdaftar'] 	= $this->input->post("no_terdaftar",TRUE);
+		$data['alamat'] 		= $this->input->post("alamat",TRUE);
+		$data['no_telp'] 		= $this->input->post("no_telp",TRUE);
+		$data['no_hp'] 			= $this->input->post("no_hp",TRUE);
+		$data['no_wa'] 			= $this->input->post("no_wa",TRUE);
+		$data['akun_ig'] 		= $this->input->post("akun_ig",TRUE);
+		$data['akun_fb'] 		= $this->input->post("akun_fb",TRUE);
+		$data['akun_twitter'] 	= $this->input->post("akun_twitter",TRUE);
+
+		$ubah = ubah_data($this->tabel_2,$data,$this->key,$id);
+
+		if($ubah==TRUE)
+		{
+			$pesan = "Data $this->tabel_2 telah berhasil diubah.";
+			?>
+			<script type="text/javascript">
+				alert("<?php echo $pesan?>");
+				window.location.href="<?php echo site_url($this->link_kembali)?>";
+			</script>
+			<?php
+		}
+
+		else
+		{
+			$pesan = "Data $this->tabel_2 gagal diubah.";
+			?>
+			<script type="text/javascript">
+				alert("<?php echo $pesan?>");
+				//window.history.back();
+			</script>
+			<?php
+		}
+	}
+
+	function proses_hapus($id)
+	{
+
+		$hapus = hapus_data($this->tabel_2,$this->key,$id);
+
+		if($hapus==TRUE)
+		{
+			$pesan = "Data $this->tabel_2 telah berhasil dihapus.";
+			?>
+			<script type="text/javascript">
+				alert("<?php echo $pesan?>");
+				window.location.href="<?php echo site_url($this->link_kembali)?>";
+			</script>
+			<?php
+		}
+
+		else
+		{
+			$pesan = "Data $this->tabel_2 gagal dihapus.";
+			?>
+			<script type="text/javascript">
+				alert("<?php echo $pesan?>");
+				window.location.href="<?php echo site_url($this->link_kembali)?>";
+			</script>
+			<?php
+		}
+	}
+}
+?>
